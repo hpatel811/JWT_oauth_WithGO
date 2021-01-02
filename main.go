@@ -22,5 +22,12 @@ func main() {
 	if err != nil {
 		log.Panic(err)
 	}
-	fmt.Println(string(bs))
+	fmt.Println("Print JSON:", string(bs))
+
+	xp := []person{}
+	err = json.Unmarshal(bs, &xp)
+	if err != nil {
+		log.Panic(err)
+	}
+	fmt.Println("Unmarshel to Go type:", xp)
 }
