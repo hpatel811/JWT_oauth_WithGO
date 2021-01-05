@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
+	"net/http"
 )
 
 type person struct {
@@ -11,23 +12,27 @@ type person struct {
 }
 
 func main() {
+	
+	http.HandleFunc("/encode", encodeReq)
+	http.HandleFunc("/decode", decodeReq)
+	http.ListenAndServe(":8080", nil)
+}
+
+func encodeReq(w http.ResponseWriter, r *http.Request) {
 	p1 := person{
 		First: "FirsName1",
 	}
-	p2 := person{
-		First: "FirstName2",
-	}
-	px := []person{p1, p2}
-	bs, err := json.Marshal(px)
+	err := json.NewEncoder(w).Encode(&p1)
 	if err != nil {
-		log.Panic(err)
+		log.Fatal(err)
 	}
-	fmt.Println("Print JSON:", string(bs))
+}
 
-	xp := []person{}
-	err = json.Unmarshal(bs, &xp)
+func decodeReq(w http.ResponseWriter, r *http.Request) {
+	p1 := person{}
+	err := json.NewDecoder(r.Body).Decode(&p1)
 	if err != nil {
-		log.Panic(err)
+		log.Fatal(err)
 	}
-	fmt.Println("Unmarshel to Go type:", xp)
+	fmt.Println("PersonDetails after decoding: ", p1)
 }
