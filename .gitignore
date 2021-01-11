@@ -17,3 +17,7 @@
 *.code-workspace
 *.sublime-project
 *.sublime.workspace
+
+# Ignore all text files
+*.txt
+*.text
